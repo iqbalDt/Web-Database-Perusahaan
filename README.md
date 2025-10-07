@@ -14,7 +14,4 @@ Aplikasi ini dibangun menggunakan:
 
 Tujuan utama dari proyek ini adalah membantu memahami bagaimana data transaksi dapat diolah menjadi informasi yang lebih bermakna menggunakan SQL Query dan disajikan dengan tampilan web interaktif.
 
----
-
-## ⚙️ Struktur Folder
-
+<img width="1920" height="748" alt="image" src="https://github.com/user-attachments/assets/cb33970c-0912-47f5-a387-ca34caf75595" />
