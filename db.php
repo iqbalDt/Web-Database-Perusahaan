@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
 $db   = 'db_perusahaan';
-$user = 'root'; // default XAMPP
-$pass = '';     // kosongkan kalau tidak pakai password
+$user = 'root'; 
+$pass = '';     
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -14,3 +14,4 @@ try {
     die("Koneksi gagal: " . $e->getMessage());
 }
 ?>
+
