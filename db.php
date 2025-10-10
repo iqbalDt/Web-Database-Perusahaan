@@ -2,7 +2,7 @@
 $host = 'localhost';
 $db   = 'db_perusahaan';
 $user = 'root'; 
-$pass = '';     
+$pass = '';   
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -14,4 +14,3 @@ try {
     die("Koneksi gagal: " . $e->getMessage());
 }
 ?>
-
