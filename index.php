@@ -1,67 +1,120 @@
+<?php
+include 'config.php'; // koneksi database
+
+// =======================
+// QUERY Q1 - Q8
+// =======================
+$queries = [
+    "Q1. Total Biaya Perpesanan & Kelompok" => 
+        "SELECT NomorPesanan, Kelompok, SUM(Jumlah) AS TotalBiaya 
+         FROM rincianbiaya 
+         GROUP BY NomorPesanan, Kelompok",
+
+    "Q2. Total biaya perbulan & kelompok" => 
+        "SELECT MONTH(Tanggal) AS Bulan, Kelompok, SUM(Jumlah) AS TotalBiaya 
+         FROM rincianbiaya 
+         GROUP BY MONTH(Tanggal), Kelompok",
+
+    "Q3. Total biaya perjenis produk & kelompok" => 
+        "SELECT kp.JenisProduk, rb.Kelompok, SUM(rb.Jumlah) AS TotalBiaya
+         FROM rincianbiaya rb 
+         JOIN kartupesanan kp ON rb.NomorPesanan = kp.NomorPesanan
+         GROUP BY kp.JenisProduk, rb.Kelompok",
+
+    "Q4. Analisis biaya produk per unit" => 
+        "SELECT kp.JenisProduk, SUM(rb.Jumlah)/SUM(kp.JmlPesanan) AS BiayaPerUnit
+         FROM rincianbiaya rb 
+         JOIN kartupesanan kp ON rb.NomorPesanan = kp.NomorPesanan
+         GROUP BY kp.JenisProduk",
+
+    "Q5. Statistik biaya per sub kelompok" => 
+        "SELECT SubKelompok, COUNT(*) AS JumlahData, SUM(Jumlah) AS TotalBiaya
+         FROM rincianbiaya 
+         GROUP BY SubKelompok",
+
+    "Q6. Biaya pesanan khusus 'sepatu'" => 
+        "SELECT kp.NomorPesanan, kp.JenisProduk, SUM(rb.Jumlah) AS TotalBiaya
+         FROM rincianbiaya rb 
+         JOIN kartupesanan kp ON rb.NomorPesanan = kp.NomorPesanan
+         WHERE kp.JenisProduk = 'Sepatu'
+         GROUP BY kp.NomorPesanan, kp.JenisProduk",
+
+    "Q7. Pesanan dengan total biaya > 20 juta (HAVING)" => 
+        "SELECT kp.NomorPesanan, SUM(rb.Jumlah) AS TotalBiaya
+         FROM rincianbiaya rb 
+         JOIN kartupesanan kp ON rb.NomorPesanan = kp.NomorPesanan
+         GROUP BY kp.NomorPesanan
+         HAVING SUM(rb.Jumlah) > 20000000",
+
+    "Q8. Pesanan Biaya tertinggi (LIMIT)" => 
+        "SELECT kp.NomorPesanan, SUM(rb.Jumlah) AS TotalBiaya
+         FROM rincianbiaya rb 
+         JOIN kartupesanan kp ON rb.NomorPesanan = kp.NomorPesanan
+         GROUP BY kp.NomorPesanan
+         ORDER BY TotalBiaya DESC
+         LIMIT 1"
+];
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Biaya Perusahaan (Latihan 4)</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Laporan Data Perusahaan (Q1 - Q8)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    h2 { background: #333; color: #fff; padding: 10px; border-radius: 5px; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #eee; }
+    .action-btn { background: #008CBA; color: white; padding: 5px 8px; text-decoration: none; border-radius: 4px; }
+    .action-btn:hover { background: #005f73; }
+  </style>
 </head>
-<body class="bg-light">
-<div class="container my-5">
-    <h1 class="text-center mb-4">Laporan Analisis Biaya Perusahaan</h1>
-    <p class="text-center text-muted mb-5">Database: <b>db_perusahaan</b></p>
+<body>
+  <h1>📊 Laporan Data Perusahaan (Q1 - Q8)</h1>
 
-    <?php
-    require_once 'db.php';
+  <?php
+  foreach ($queries as $judul => $sql) {
+      echo "<h2>$judul</h2>";
+      $result = mysqli_query($conn, $sql);
 
-    // Daftar view dan judul tampilannya
-    $queries = [
-        'v_laporbiayaperpesanan' => 'Q1. Total Biaya Per Pesanan & Kelompok',
-        'v_laporbiayaperbulan' => 'Q2. Total Biaya Per Bulan & Kelompok',
-        'v_biayaperproduk' => 'Q3. Total Biaya Per Jenis Produk & Kelompok',
-        'v_biayaprodukperpesanan' => 'Q4. Analisis Biaya Produk Per Unit',
-        'v_rekapbiayapersubkelompok' => 'Q5. Statistik Biaya Per Sub Kelompok',
-        'v_biayaproduksepatu' => 'Q6. Biaya Pesanan Khusus "Sepatu"',
-        'v_biayalebih20juta' => 'Q7. Pesanan dengan Total Biaya > 20 Juta (HAVING)',
-        'v_top3kelompokbiayaterbesar' => 'Q8. Pesanan Biaya Tertinggi (LIMIT)'
-    ];
+      if (!$result) {
+          echo "<p style='color:red;'>Error: " . mysqli_error($conn) . "</p>";
+          continue;
+      }
 
-    foreach ($queries as $view => $title) {
-        echo "<div class='card mb-5 shadow-sm'>";
-        echo "<div class='card-header bg-dark text-white fw-bold'>{$title}</div>";
-        echo "<div class='card-body'>";
+      if (mysqli_num_rows($result) > 0) {
+          echo "<table>";
+          // Header otomatis
+          echo "<tr>";
+          while ($fieldinfo = mysqli_fetch_field($result)) {
+              echo "<th>" . htmlspecialchars($fieldinfo->name) . "</th>";
+          }
+          echo "<th>Action</th>";
+          echo "</tr>";
 
-        try {
-            $stmt = $pdo->query("SELECT * FROM $view");
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          // Isi tabel
+          while ($row = mysqli_fetch_assoc($result)) {
+              echo "<tr>";
+              foreach ($row as $val) {
+                  echo "<td>" . htmlspecialchars($val) . "</td>";
+              }
+              // Action
+              echo "<td>
+                      <a href='edit.php?id=" . $row[array_key_first($row)] . "' class='action-btn'>Edit</a>
+                      <a href='delete.php?id=" . $row[array_key_first($row)] . "' class='action-btn' style='background:#e74c3c;'>Delete</a>
+                      <a href='detail.php?id=" . $row[array_key_first($row)] . "' class='action-btn' style='background:#2ecc71;'>Detail</a>
+                    </td>";
+              echo "</tr>";
+          }
+          echo "</table>";
+      } else {
+          echo "<p>Tidak ada data untuk $judul</p>";
+      }
+  }
+  ?>
 
-            if (count($rows) > 0) {
-                echo '<div class="table-responsive">';
-                echo '<table class="table table-bordered table-hover">';
-                echo '<thead class="table-dark"><tr>';
-                foreach (array_keys($rows[0]) as $col) {
-                    echo '<th>' . htmlspecialchars($col) . '</th>';
-                }
-                echo '</tr></thead><tbody>';
-                foreach ($rows as $row) {
-                    echo '<tr>';
-                    foreach ($row as $val) {
-                        echo '<td>' . htmlspecialchars($val) . '</td>';
-                    }
-                    echo '</tr>';
-                }
-                echo '</tbody></table></div>';
-            } else {
-                echo '<div class="alert alert-info">Tidak ada data pada view ini.</div>';
-            }
-        } catch (PDOException $e) {
-            echo '<div class="alert alert-danger">Error: ' . htmlspecialchars($e->getMessage()) . '</div>';
-        }
-
-        echo "</div></div>";
-    }
-    ?>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
