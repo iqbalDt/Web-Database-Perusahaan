@@ -14,9 +14,14 @@ Aplikasi ini dibangun menggunakan:
 
 Tujuan utama dari proyek ini adalah membantu memahami bagaimana data transaksi dapat diolah menjadi informasi yang lebih bermakna menggunakan SQL Query dan disajikan dengan tampilan web interaktif.
 
-<img width="1920" height="748" alt="image" src="https://github.com/user-attachments/assets/cb33970c-0912-47f5-a387-ca34caf75595" />
-<img width="1918" height="553" alt="image" src="https://github.com/user-attachments/assets/376042c5-68f2-460f-9d2e-f1c50847ceab" />
-<img width="1920" height="542" alt="image" src="https://github.com/user-attachments/assets/18e31322-cfa5-4bb3-a399-e283c6feb583" />
-<img width="1920" height="833" alt="image" src="https://github.com/user-attachments/assets/86fd08f7-eea3-4b21-9ddb-6ed16f9215c1" />
-<img width="1915" height="769" alt="image" src="https://github.com/user-attachments/assets/d8227a4c-08a9-4a47-ac9f-0138b93bf24c" />
-<img width="1920" height="433" alt="image" src="https://github.com/user-attachments/assets/cd7ad12b-0f18-44be-97f8-0faa4939278f" />
+cara menjalankan ketik "http://localhost/WebDB/index.php"
+
+# HASIL
+<img width="1920" height="544" alt="image" src="https://github.com/user-attachments/assets/a2df8bd8-0ac2-4eb8-afac-2beeedcd13f5" />
+<img width="1920" height="884" alt="image" src="https://github.com/user-attachments/assets/6a55a365-3fda-4751-8141-d539c3db0774" />
+<img width="1920" height="887" alt="image" src="https://github.com/user-attachments/assets/479777ce-757f-4041-866f-4c05c9b7c52a" />
+<img width="1920" height="538" alt="image" src="https://github.com/user-attachments/assets/8dcdbbb5-a890-45ef-b39b-8c2a99fa9b11" />
+
+# TAMPILAN ACTION
+<img width="1916" height="762" alt="image" src="https://github.com/user-attachments/assets/de6f7881-c7ba-4e3f-ad07-f278bcf6036f" />
+<img width="1920" height="803" alt="image" src="https://github.com/user-attachments/assets/21c0ca0b-232c-466d-b975-36f92a032d0f" />
